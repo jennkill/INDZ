@@ -1,9 +1,9 @@
 using System;
 using System.Collections.Generic;
 
-namespace HangmanEnglish
+namespace HangmanGame
 {
-    class Program
+    public static class HangmanLogic
     {
         // ASCII картинки шибениці
         static readonly string[] HangmanStages = new string[]
@@ -61,14 +61,13 @@ namespace HangmanEnglish
 ███████████████████████████████"
         };
 
-        static void Main(string[] args)
+        public static void Start()
         {
+            Console.Clear();
             Console.OutputEncoding = System.Text.Encoding.UTF8;
 
-            // 100 унікальних слів + підказки
             Dictionary<string, string> wordHints = new Dictionary<string, string>
             {
-                // Легкі слова
                 { "apple", "Червоний або зелений фрукт" },
                 { "orange", "Цитрус, а також колір" },
                 { "house", "Місце, де живуть люди" },
@@ -86,30 +85,6 @@ namespace HangmanEnglish
                 { "star", "Яскрава точка на небі" },
                 { "tree", "Рослина з гілками та листям" },
                 { "flower", "Рослина з красивими пелюстками" },
-                { "car", "Транспортний засіб на колесах" },
-                { "bike", "Двоколісний транспорт" },
-                { "milk", "Напій від корови" },
-                { "water", "Прозора рідина, необхідна для життя" },
-                { "bread", "Їжа, що робиться з борошна" },
-                { "egg", "Їжа з шкаралупою, від курки" },
-                { "pen", "Інструмент для письма" },
-                { "pencil", "Інструмент для письма, легко стирається" },
-                { "bag", "Щось, куди можна покласти речі" },
-                { "shoe", "Взуття для ніг" },
-                { "hat", "Що носять на голові" },
-                { "rain", "Вода, що падає з неба" },
-                { "snow", "Білий холодний опад" },
-                { "fire", "Те, що горить" },
-                { "ice", "Замерзла вода" },
-                { "food", "Що ми їмо" },
-                { "milkshake", "Солодкий напій з молока" },
-                { "juice", "Рідина із фруктів" },
-                { "beach", "Пісочна місцевість біля моря" },
-                { "forest", "Місце з великою кількістю дерев" },
-                { "island", "Земля, оточена водою" },
-                { "cloud", "Білий або сірий об'єкт у небі" },
-                { "rainbow", "Кольорова дуга після дощу" },
-                { "starfish", "Морський організм" },
             };
 
             Random rand = new Random();
@@ -120,7 +95,7 @@ namespace HangmanEnglish
             char[] guessed = new string('_', secretWord.Length).ToCharArray();
             int attempts = 3;
             HashSet<char> usedLetters = new HashSet<char>();
-            
+
             Console.ForegroundColor = ConsoleColor.Cyan;
             Console.WriteLine("╔════════════════════════════════════╗");
             Console.WriteLine("║           Ш И Б Е Н И Ц Я          ║");
@@ -132,7 +107,6 @@ namespace HangmanEnglish
             while (attempts >= 0 && new string(guessed) != secretWord)
             {
                 Console.WriteLine(HangmanStages[3 - attempts]);
-
                 Console.WriteLine($"Слово: {string.Join(" ", guessed)}");
                 Console.WriteLine($"Залишилось спроб: {attempts}");
                 Console.WriteLine($"Використані літери: {string.Join(", ", usedLetters)}");
@@ -163,7 +137,7 @@ namespace HangmanEnglish
 
                 char input = inp[0];
 
-                if (!char.IsLetter(input))
+                if (!char.IsLetter(input) || input > 'z')
                 {
                     Console.WriteLine("Введи англійську букву!\n");
                     continue;
@@ -199,12 +173,13 @@ namespace HangmanEnglish
             }
             else
             {
-                Console.WriteLine(HangmanStages[HangmanStages.Length - 1]);
+                Console.WriteLine(HangmanStages[^1]);
                 Console.WriteLine($"Поразка! Слово було: {secretWord}");
             }
 
-            Console.WriteLine("\nНатисни будь-яку клавішу для виходу...");
+            Console.WriteLine("\nНатисни будь-яку клавішу для повернення в меню...");
             Console.ReadKey();
         }
     }
 }
+
